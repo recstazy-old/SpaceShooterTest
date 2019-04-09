@@ -69,7 +69,7 @@ public class AsteroidController : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
-        else if (collision.gameObject.name == "BottomWall")
+        else if (collision.gameObject.tag == "Player" || collision.gameObject.name == "BottomWall")
         {
             gameObject.SetActive(false);
         }

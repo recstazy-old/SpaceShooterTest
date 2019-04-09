@@ -9,7 +9,7 @@ public class AsteroidModel
 
     public Vector2 Position { get; set; }
     public float RotationAngle { get; set; }
-    public int Speed { get; private set; } = 2;
+    public int Speed { get; private set; } = 4;
 
     public AsteroidModel()
     {
