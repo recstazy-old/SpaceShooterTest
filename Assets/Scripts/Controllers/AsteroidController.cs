@@ -35,7 +35,7 @@ public class AsteroidController : MonoBehaviour
             View.Rigidbody.angularVelocity = Model.Speed * speedMultipler * 3f;
             if (RandomBool())
             {
-                View.Rigidbody.angularVelocity = -View.Rigidbody.angularVelocity; // Изменяет направление вращения метеорита
+                View.Rigidbody.angularVelocity = -View.Rigidbody.angularVelocity; // Changes Asteroid's rotation direction
             }
         }
     }

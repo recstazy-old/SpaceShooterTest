@@ -5,47 +5,37 @@ using UniRx;
 
 public class GameController : MonoBehaviour
 {
+    public delegate void GameControllerHandler();
+    public static event GameControllerHandler OnGameOver;
+    public static event GameControllerHandler OnRestart;
+
+
     PlayerController PlayerController { get; set; }
-    PlayerModel PlayerModel { get; set; }
+    public PlayerModel PlayerModel { get; private set; }
 
-    public GameObject hearts;
-    List<GameObject> lives = new List<GameObject>();
-
-    void Start()
+    private void Awake()
     {
         PlayerController = FindObjectOfType<PlayerController>();
         PlayerModel = PlayerController.PlayerModel;
+    }
 
-        CacheLives();
-
+    void Start()
+    {
         PlayerModel.HP.AsObservable()
-            .Subscribe(SetLives);
+            .Where(_ => PlayerModel.HP.Value == 0)
+            .Subscribe(GameOver);
     }
 
-    void CacheLives()
+    void GameOver(int _)
     {
-        for (int i = 0; i < hearts.transform.childCount; i++)
-        {
-            lives.Add(hearts.transform.GetChild(i).gameObject);
-        }
-    }
-
-    void SetLives(int n)
-    {
-        if (n - 1 >= 0)
-        {
-            lives[n - 1].SetActive(false);
-
-            if(n - 1 == 0)
-            {
-                GameOver();
-            }
-        }
-    }
-
-    void GameOver()
-    {
+        Debug.Log(PlayerModel.HP.Value);
         Time.timeScale = 0;
-        Debug.Log("Game Over");
+        OnGameOver?.Invoke();
+    }
+
+    public void Restart()
+    {
+        OnRestart?.Invoke();
+        Time.timeScale = 1;
     }
 }

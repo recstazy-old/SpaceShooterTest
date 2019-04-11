@@ -18,7 +18,7 @@ public class InputController : MonoBehaviour
     }
 
     void OnTouch(Unit x)
-    { 
+    {
         TouchPos.Value = ScalePosition(Input.GetTouch(0).position);
     }
 

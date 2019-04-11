@@ -10,12 +10,17 @@ public class PlayerModel
 
     public bool Shooting { get; set; } = true;
     
-    public ReactiveProperty<int> HP { get; set; }
-    public ReactiveProperty<Vector2> Position { get; set; }
+    public ReactiveProperty<int> HP { get; set; } = new ReactiveProperty<int>();
+    public ReactiveProperty<Vector2> Position { get; set; } = new ReactiveProperty<Vector2>();
 
     public PlayerModel()
     {
-        HP = new ReactiveProperty<int>(startHP);
-        Position = new ReactiveProperty<Vector2>(startPosition);
+        SetDefaults();
+    }
+
+    public void SetDefaults()
+    {
+        HP.Value = startHP;
+        Position.Value = startPosition;
     }
 }

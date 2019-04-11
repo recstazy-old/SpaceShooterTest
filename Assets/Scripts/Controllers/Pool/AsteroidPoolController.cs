@@ -7,8 +7,10 @@ public class AsteroidPoolController : Pool
 {
     private void Start()
     {
-        AddToList();
+        AddChildrenToList();
         StartCoroutine(AsteroidSpawner());
+
+        GameController.OnRestart += KillAllObjects;
     }
 
     IEnumerator AsteroidSpawner()
@@ -18,7 +20,7 @@ public class AsteroidPoolController : Pool
             float x = Random.Range(0.5f, 7.5f);
             Vector2 position = new Vector2(x, 16f);
             SpawnObject(position);
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2f);
         }
     }
 }

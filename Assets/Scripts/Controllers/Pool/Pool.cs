@@ -7,7 +7,7 @@ public class Pool : MonoBehaviour
 {
     protected ReactiveCollection<GameObject> List { get; set; } = new ReactiveCollection<GameObject>();
 
-    protected void AddToList()
+    protected void AddChildrenToList()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -24,6 +24,17 @@ public class Pool : MonoBehaviour
                 obj.transform.position = pos;
                 obj.SetActive(true);
                 break;
+            }
+        }
+    }
+
+    protected void KillAllObjects()
+    {
+        foreach (GameObject obj in List)
+        {
+            if (obj.activeSelf)
+            {
+                obj.SetActive(false);
             }
         }
     }

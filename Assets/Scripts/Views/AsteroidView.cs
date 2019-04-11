@@ -10,13 +10,6 @@ public class AsteroidView : View
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
-
-        Debug.Log(Rigidbody);
         RigidbodyRctv.Value = Rigidbody;
-    }
-
-    void Start()
-    {
-        
     }
 }

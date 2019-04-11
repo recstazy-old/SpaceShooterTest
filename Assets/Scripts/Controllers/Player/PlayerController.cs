@@ -5,7 +5,7 @@ using UniRx;
 
 public class PlayerController : MonoBehaviour
 {
-    public delegate void AttackHandler(Vector2 pos); // Делегат передает положение игрока для корректного спауна пули
+    public delegate void AttackHandler(Vector2 pos); // Delegates the player position for bullet to spawn at
     public static event AttackHandler OnAttack;
 
     public PlayerModel PlayerModel { get; private set; } = new PlayerModel();
@@ -14,10 +14,10 @@ public class PlayerController : MonoBehaviour
     {
         InputController.TouchPos.AsObservable()
             .Subscribe(WritePosToModel);
-
         
-
         StartCoroutine(Attack());
+
+        GameController.OnRestart += Restart;
     }
 
     void WritePosToModel(Vector2 pos)
@@ -45,6 +45,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void Restart()
+    {
+        PlayerModel.SetDefaults();
+    }
+
+    // just for easier testing, will be deleted
     private void Update()
     {
         if (Input.GetKey(KeyCode.A))

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
-using UnityEngine.EventSystems;
+using UniRx.Triggers;
 
 public class PlayerView : View
 {
+    PlayerController PlayerController { get; set; }
     PlayerModel PlayerModel { get; set; }
     SpriteRenderer Sprite { get; set; }
 
@@ -17,18 +18,28 @@ public class PlayerView : View
 
     private void Start()
     {
-        PlayerModel = GetComponent<PlayerController>().PlayerModel;
+        PlayerController = GetComponent<PlayerController>();
+        PlayerModel = PlayerController.PlayerModel;
 
-        PlayerModel.Position.AsObservable()
-             .Subscribe(RefreshPosition);
+        //PlayerController.PlayerModel.ObserveEveryValueChanged(x => PlayerController.PlayerModel)
+        //    .Subscribe(UpdateReference);
+
+        this.UpdateAsObservable()
+            .Where(_ => Rigidbody.position != PlayerModel.Position.Value)
+            .Subscribe(LerpToPosition);
 
         PlayerModel.HP.AsObservable()
+            .Where(_ => PlayerModel.HP.Value < 3)
             .Subscribe(StartBlinking);
+
+        //PlayerModel.Position.AsObservable()
+        //     .Subscribe(RefreshPosition);
     }
 
-    public void RefreshPosition(Vector2 pos)
+    void LerpToPosition(Unit _)
     {
-        Rigidbody.MovePosition(pos);
+        //Moves view to position from model
+        Rigidbody.MovePosition(Vector2.Lerp(Rigidbody.position, PlayerModel.Position.Value, 0.3f));
     }
 
     void StartBlinking(int _)
@@ -42,10 +53,21 @@ public class PlayerView : View
 
         for(int i = 0; i < 4; i++)
         {
-            Sprite.color = Color.white;
+            Sprite.color = Color.black;
             yield return new WaitForSeconds(0.05f);
             Sprite.color = spriteColor;
             yield return new WaitForSeconds(0.05f);
         }
     }
+
+    //void UpdateReference(PlayerModel pModel)
+    //{
+    //    Debug.Log(ReferenceEquals(PlayerModel, pModel));
+    //    PlayerModel = pModel;
+    //}
+
+    //public void RefreshPosition(Vector2 pos)
+    //{
+    //    Rigidbody.MovePosition(pos);
+    //}
 }

@@ -5,5 +5,5 @@ using UniRx;
 
 public class BulletModel
 {
-    public int speed = 20;
+    public int speed = 25;
 }
