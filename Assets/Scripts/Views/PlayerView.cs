@@ -21,9 +21,6 @@ public class PlayerView : View
         PlayerController = GetComponent<PlayerController>();
         PlayerModel = PlayerController.PlayerModel;
 
-        //PlayerController.PlayerModel.ObserveEveryValueChanged(x => PlayerController.PlayerModel)
-        //    .Subscribe(UpdateReference);
-
         this.UpdateAsObservable()
             .Where(_ => Rigidbody.position != PlayerModel.Position.Value)
             .Subscribe(LerpToPosition);
@@ -31,9 +28,6 @@ public class PlayerView : View
         PlayerModel.HP.AsObservable()
             .Where(_ => PlayerModel.HP.Value < 3)
             .Subscribe(StartBlinking);
-
-        //PlayerModel.Position.AsObservable()
-        //     .Subscribe(RefreshPosition);
     }
 
     void LerpToPosition(Unit _)
@@ -59,15 +53,4 @@ public class PlayerView : View
             yield return new WaitForSeconds(0.05f);
         }
     }
-
-    //void UpdateReference(PlayerModel pModel)
-    //{
-    //    Debug.Log(ReferenceEquals(PlayerModel, pModel));
-    //    PlayerModel = pModel;
-    //}
-
-    //public void RefreshPosition(Vector2 pos)
-    //{
-    //    Rigidbody.MovePosition(pos);
-    //}
 }

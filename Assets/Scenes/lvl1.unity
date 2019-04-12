@@ -2222,7 +2222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hearts: {fileID: 1894861099}
-  GameOverObj: {fileID: 792966372}
+  GameOverAlert: {fileID: 792966372}
 --- !u!1 &1025910319
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using System;
 
+[Serializable]
 public class PlayerModel
 {
     const int startHP = 3;
@@ -15,6 +17,7 @@ public class PlayerModel
 
     public PlayerModel()
     {
+        //Debug.Log("Constructor");
         SetDefaults();
     }
 

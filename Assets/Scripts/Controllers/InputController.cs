@@ -6,6 +6,9 @@ using UniRx.Triggers;
 
 public class InputController : MonoBehaviour
 {
+    public delegate void EscapeHandler();
+    public static event EscapeHandler OnEscape;
+
     // Attached to EventSystem gameObj
 
     public static ReactiveProperty<Vector2> TouchPos { get; private set; } = new ReactiveProperty<Vector2>();
@@ -15,6 +18,14 @@ public class InputController : MonoBehaviour
         this.UpdateAsObservable()
             .Where(x => Input.touchCount > 0)
             .Subscribe(OnTouch);
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetKeyDown(KeyCode.Escape))
+            .Subscribe(Escape);
+    }
+
+    void Escape(Unit _)
+    {
+        OnEscape?.Invoke();
     }
 
     void OnTouch(Unit x)

@@ -11,7 +11,7 @@ public class GameView : MonoBehaviour
     public GameObject hearts;
     List<GameObject> lives = new List<GameObject>();
 
-    public GameObject GameOverObj;
+    public GameObject GameOverAlert;
     
     void Start()
     {
@@ -37,11 +37,6 @@ public class GameView : MonoBehaviour
 
     void SetLives(int n)
     {
-        //if (n - 1 >= 0 && n < lives.Count)
-        //{
-        //    lives[n].SetActive(false);
-        //}
-
         for (int i = 0; i < n; i++)
         {
             if(!lives[i].activeSelf)
@@ -60,11 +55,11 @@ public class GameView : MonoBehaviour
 
     void GameOver()
     {
-        GameOverObj.SetActive(true);
+        GameOverAlert.SetActive(true);
     }
 
     void Restart()
     {
-        GameOverObj.SetActive(false);
+        GameOverAlert.SetActive(false);
     }
 }

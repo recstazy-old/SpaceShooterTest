@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class AsteroidModel
 {
+    [SerializeField]
     int StartHP { get; set; } = 3;
     public int CurrentHP { get; set; }
 
