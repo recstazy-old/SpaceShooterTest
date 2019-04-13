@@ -8,7 +8,6 @@ public class PlayerView : View
 {
     PlayerController PlayerController { get; set; }
     PlayerModel PlayerModel { get; set; }
-    SpriteRenderer Sprite { get; set; }
 
     private void Awake()
     {
@@ -38,19 +37,6 @@ public class PlayerView : View
 
     void StartBlinking(int _)
     {
-        StartCoroutine(Blink());
-    }
-
-    IEnumerator Blink()
-    {
-        Color spriteColor = Sprite.color;
-
-        for(int i = 0; i < 4; i++)
-        {
-            Sprite.color = Color.black;
-            yield return new WaitForSeconds(0.05f);
-            Sprite.color = spriteColor;
-            yield return new WaitForSeconds(0.05f);
-        }
+        StartCoroutine(ColorBlink.Blink(Sprite, Color.black, 0.05f));
     }
 }

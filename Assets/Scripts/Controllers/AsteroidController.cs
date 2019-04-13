@@ -26,13 +26,15 @@ public class AsteroidController : MonoBehaviour
 
     void SetProperties()
     {
-        Model.CurrentHP = 3;
+        Model.CurrentHP.Value = 3;
         float speedMultipler = Random.Range(0.9f, 1.1f);
         
         if (View != null)
         {
+            View.Sprite.color = Model.StartColor;
             View.Rigidbody.velocity = Vector2.down * Model.Speed * speedMultipler;
             View.Rigidbody.angularVelocity = Model.Speed * speedMultipler * 3f;
+
             if (RandomBool())
             {
                 View.Rigidbody.angularVelocity = -View.Rigidbody.angularVelocity; // Changes Asteroid's rotation direction
@@ -60,11 +62,11 @@ public class AsteroidController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Bullet")
         {
-            if(Model.CurrentHP > 1)
+            if(Model.CurrentHP.Value > 1)
             {
-                Model.CurrentHP--;
+                Model.CurrentHP.Value--;
             }
-            else if(Model.CurrentHP <= 1)
+            else if(Model.CurrentHP.Value <= 1)
             {
                 gameObject.SetActive(false);
             }

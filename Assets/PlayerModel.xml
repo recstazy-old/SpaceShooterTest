@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<PlayerModel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Shooting>true</Shooting>
+  <HP>
+    <Value>3</Value>
+  </HP>
+  <Position>
+    <Value>
+      <x>4</x>
+      <y>1</y>
+    </Value>
+  </Position>
+</PlayerModel>

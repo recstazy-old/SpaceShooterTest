@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public delegate void AttackHandler(Vector2 pos); // Delegates the player position for bullet to spawn at
     public static event AttackHandler OnAttack;
 
-    public PlayerModel PlayerModel { get; /*private*/ set; } = new PlayerModel();
+    public PlayerModel PlayerModel { get; set; } = new PlayerModel();
 
     private void Start()
     {
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         while (PlayerModel.Shooting)
         {
             OnAttack?.Invoke(PlayerModel.Position.Value);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
