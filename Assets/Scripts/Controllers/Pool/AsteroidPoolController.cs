@@ -23,4 +23,9 @@ public class AsteroidPoolController : Pool
             yield return new WaitForSeconds(2f);
         }
     }
+
+    private void OnDestroy()
+    {
+        GameController.OnRestart -= KillAllObjects;
+    }
 }

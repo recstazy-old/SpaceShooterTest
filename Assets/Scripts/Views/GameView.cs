@@ -10,14 +10,17 @@ public class GameView : MonoBehaviour
 
     public GameObject hearts;
     List<GameObject> lives = new List<GameObject>();
-
-    public GameObject GameOverAlert;
     
+    private void OnEnable()
+    {
+        if (hearts == null)
+        {
+            hearts = GameObject.Find("Hearts");
+        }
+    }
+
     void Start()
     {
-        GameController.OnGameOver += GameOver;
-        GameController.OnRestart += Restart;
-
         GameController = GetComponent<GameController>();
         PlayerModel = GameController.PlayerModel;
 
@@ -51,15 +54,5 @@ public class GameView : MonoBehaviour
                 lives[i].SetActive(false);
             }
         }
-    }
-
-    void GameOver()
-    {
-        GameOverAlert.SetActive(true);
-    }
-
-    void Restart()
-    {
-        GameOverAlert.SetActive(false);
     }
 }

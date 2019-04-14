@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 public class Serializer
 {
-    readonly string extension = ".xml";
+    readonly string extension = ".sss"; //sss = SpaceShooterSave =)
 
     string dataPath;
 

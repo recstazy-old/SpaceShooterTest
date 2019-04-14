@@ -10,14 +10,17 @@ public class PlayerController : MonoBehaviour
 
     public PlayerModel PlayerModel { get; set; } = new PlayerModel();
 
+    private void OnEnable()
+    {
+        GameController.OnRestart += Restart;
+    }
+
     private void Start()
     {
         InputController.TouchPos.AsObservable()
             .Subscribe(WritePosToModel);
         
         StartCoroutine(Attack());
-
-        GameController.OnRestart += Restart;
     }
 
     void WritePosToModel(Vector2 pos)
@@ -62,5 +65,10 @@ public class PlayerController : MonoBehaviour
         {
             PlayerModel.Position.Value += Vector2.right * 10 * Time.deltaTime;
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameController.OnRestart -= Restart;
     }
 }

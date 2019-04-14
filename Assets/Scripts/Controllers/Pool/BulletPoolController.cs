@@ -10,4 +10,10 @@ public class BulletPoolController : Pool
 
         GameController.OnRestart += KillAllObjects;
     }
+
+    private void OnDestroy()
+    {
+        GameController.OnRestart -= KillAllObjects;
+        PlayerController.OnAttack -= SpawnObject;
+    }
 }

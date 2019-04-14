@@ -7,6 +7,7 @@ TagManager:
   - Asteroid
   - Bullet
   - Wall
+  - Hearts
   layers:
   - Default
   - TransparentFX
