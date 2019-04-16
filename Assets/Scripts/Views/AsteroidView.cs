@@ -26,6 +26,16 @@ public class AsteroidView : View
             .Subscribe(Blink);
     }
 
+    private void OnEnable()
+    {
+        Sprite.color = Model.StartColor;
+    }
+
+    private void OnDisable()
+    {
+        Sprite.color = Model.StartColor;
+    }
+
     void Blink(int _)
     {
         StartCoroutine(ColorBlink.Blink(Sprite, Color.gray, 0.025f));

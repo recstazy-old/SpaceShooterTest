@@ -8,7 +8,7 @@ public class GameView : MonoBehaviour
     GameController GameController { get; set; }
     PlayerModel PlayerModel { get; set; }
 
-    public GameObject hearts;
+    GameObject hearts;
     List<GameObject> lives = new List<GameObject>();
     
     private void OnEnable()

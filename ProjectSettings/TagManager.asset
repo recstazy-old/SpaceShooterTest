@@ -45,3 +45,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Stars
+    uniqueID: 3330635865
+    locked: 0
+  - name: Bullets
+    uniqueID: 2011915255
+    locked: 0
+  - name: Asteroids
+    uniqueID: 2530566693
+    locked: 0
+  - name: Player
+    uniqueID: 2640099883
+    locked: 0

@@ -60,7 +60,6 @@ public class Serializer
             {
                 obj = (System.Object)ObjSerializer.Deserialize(fs);
             }
-            Debug.Log("Deserialized");
         }
 
         return obj;

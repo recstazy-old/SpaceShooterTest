@@ -5,12 +5,15 @@ using UniRx;
 
 public class AsteroidController : MonoBehaviour
 {
+    public static event GameController.GameControllerHandler OnAsteroidKilled;
+
     public AsteroidModel Model { get; private set; } = new AsteroidModel();
     public AsteroidView View { get; set; }
 
     private void Start()
     {
         View = GetComponent<AsteroidView>();
+
         SetProperties();
 
         View.RigidbodyRctv.AsObservable().Subscribe(WriteToModel);
@@ -26,14 +29,13 @@ public class AsteroidController : MonoBehaviour
 
     void SetProperties()
     {
-        Model.CurrentHP.Value = 3;
+        Model.CurrentHP.Value = Model.StartHP;
         float speedMultipler = Random.Range(0.9f, 1.1f);
         
         if (View != null)
         {
-            View.Sprite.color = Model.StartColor;
             View.Rigidbody.velocity = Vector2.down * Model.Speed * speedMultipler;
-            View.Rigidbody.angularVelocity = Model.Speed * speedMultipler * 3f;
+            View.Rigidbody.angularVelocity = Model.Speed * speedMultipler * 10f;
 
             if (RandomBool())
             {
@@ -69,6 +71,7 @@ public class AsteroidController : MonoBehaviour
             else if(Model.CurrentHP.Value <= 1)
             {
                 gameObject.SetActive(false);
+                OnAsteroidKilled?.Invoke();
             }
         }
         else if (collision.gameObject.tag == "Player" || collision.gameObject.name == "BottomWall")
@@ -76,4 +79,5 @@ public class AsteroidController : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+    
 }

@@ -3,12 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UniRx;
+using UnityEngine.SceneManagement;
 
 public class AsteroidModel
 {
-    int StartHP { get; set; } = 3;
+    public int StartHP
+    {
+        get
+        {
+            if(SceneManager.GetActiveScene().buildIndex == 2)
+            {
+                return 3;
+            }
+            else if(SceneManager.GetActiveScene().buildIndex == 3)
+            {
+                return 5;
+            }
+
+            return 2;
+        }
+    }
+
+
+
     public Color StartColor { get; private set; } = new Color(1f, 0.2783019f, 0.3963421f, 1f);
-    //public int CurrentHP { get; set; }
     public ReactiveProperty<int> CurrentHP { get; set; } = new ReactiveProperty<int>();
 
     public Vector2 Position { get; set; }
@@ -17,6 +35,6 @@ public class AsteroidModel
 
     public AsteroidModel()
     {
-        CurrentHP.Value = StartHP;
+        CurrentHP.Value = 2;
     }
 }

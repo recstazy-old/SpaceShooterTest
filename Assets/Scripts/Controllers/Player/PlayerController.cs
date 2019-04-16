@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public static event AttackHandler OnAttack;
 
     public PlayerModel PlayerModel { get; set; } = new PlayerModel();
-
+    
     private void OnEnable()
     {
         GameController.OnRestart += Restart;
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         while (PlayerModel.Shooting)
         {
             OnAttack?.Invoke(PlayerModel.Position.Value);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(PlayerModel.AttackSpeed);
         }
     }
 
@@ -53,6 +53,11 @@ public class PlayerController : MonoBehaviour
         PlayerModel.SetDefaults();
     }
 
+    private void OnDestroy()
+    {
+        GameController.OnRestart -= Restart;
+    }
+
     // just for easier testing, will be deleted
     private void Update()
     {
@@ -65,10 +70,5 @@ public class PlayerController : MonoBehaviour
         {
             PlayerModel.Position.Value += Vector2.right * 10 * Time.deltaTime;
         }
-    }
-
-    private void OnDestroy()
-    {
-        GameController.OnRestart -= Restart;
     }
 }

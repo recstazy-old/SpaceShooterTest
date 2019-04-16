@@ -26,6 +26,12 @@ public class BulletController : MonoBehaviour
         if (View != null)
         {
             View.Rigidbody.velocity = Vector2.up * Model.speed;
+            View.Trail.Clear();
         }
     }
+
+    //private void OnDisable()
+    //{
+        
+    //}
 }

@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     public delegate void GameControllerHandler();
     public static event GameControllerHandler OnGameOver;
+    public static event GameControllerHandler OnLevelComplete;
     public static event GameControllerHandler OnRestart;
     public static event GameControllerHandler OnMainMenu;
 
     Serializer Serializer { get; set; } = new Serializer();
     PlayerController PlayerController { get; set; }
     public PlayerModel PlayerModel { get; private set; }
+    public GameData GameData { get; private set; }
 
     public static bool isGameOver = false;
 
     private void Awake()
     {
+        GameData = new GameData();
+        
         PlayerController = FindObjectOfType<PlayerController>();
         DeserializeAll();
 
@@ -29,6 +34,10 @@ public class GameController : MonoBehaviour
         PlayerModel.HP.AsObservable()
             .Where(_ => PlayerModel.HP.Value == 0)
             .Subscribe(GameOver);
+
+        GameData.Score.AsObservable()
+            .Where(x => GameData.Score.Value <= 0)
+            .Subscribe(LevelComplete);
     }
 
     private void OnEnable()
@@ -36,6 +45,20 @@ public class GameController : MonoBehaviour
         InputController.OnEscape += MainMenu;
         MainMenuController.OnExit += ExitGame;
         MainMenuController.OnRestart += Restart;
+        AsteroidController.OnAsteroidKilled += AsteroidKilled;
+    }
+
+    void AsteroidKilled()
+    {
+        GameData.Score.Value--;
+    }
+
+    void LevelComplete(int score)
+    {
+        Time.timeScale = 0;
+        GameData.Score.Value = 10;
+        SerializeAll();
+        OnLevelComplete?.Invoke();
     }
 
     void GameOver(int _)
@@ -79,12 +102,25 @@ public class GameController : MonoBehaviour
     void SerializeAll()
     {
         Serializer.SerializeObject(PlayerModel);
-        Debug.Log("Serialized");
+
+        GameData.CurrentScene = SceneManager.GetActiveScene().name;
+        GameData.SavedScore = GameData.Score.Value;
+        Serializer.SerializeObject(GameData);
     }
 
     void DeserializeAll()
     {
         PlayerController.PlayerModel = Serializer.DeserializeObject(PlayerController.PlayerModel) as PlayerModel;
+
+        GameData = Serializer.DeserializeObject(GameData) as GameData;
+        GameData.Score.Value = GameData.SavedScore;
+
+        if(GameData.CurrentScene != SceneManager.GetActiveScene().name)
+        {
+            GameData.CurrentScene = SceneManager.GetActiveScene().name;
+            GameData.Score.Value = GameData.StartScore;
+            PlayerController.PlayerModel.SetDefaults();
+        }
     }
 
     private void OnDestroy()
@@ -92,5 +128,6 @@ public class GameController : MonoBehaviour
         InputController.OnEscape -= MainMenu;
         MainMenuController.OnExit -= ExitGame;
         MainMenuController.OnRestart -= Restart;
+        AsteroidController.OnAsteroidKilled -= AsteroidKilled;
     }
 }

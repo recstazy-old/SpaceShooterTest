@@ -15,7 +15,7 @@ public class Pool : MonoBehaviour
         }
     }
 
-    protected void SpawnObject(Vector2 pos)  // pos - координаты появления объекта
+    protected void SpawnObject(Vector2 pos)  // pos - object spawn position
     {
         foreach (GameObject obj in List)
         {

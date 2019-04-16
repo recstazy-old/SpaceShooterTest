@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UniRx;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -9,12 +10,20 @@ public class MainMenuController : MonoBehaviour
     public static event UIHandler OnExit;
     public static event UIHandler OnRestart;
 
-    public GameObject mainMenu, mainMenuCanvas, lvlSelect, gameOverMassage, hearts;
+    public GameObject mainMenu, mainMenuCanvas, lvlSelect, gameOverMassage, levelCompleteMassage, hearts, score;
+
+    public UIData UIData { get; private set; }
+
+    Serializer Serializer = new Serializer();
 
     private void OnEnable()
     {
         GameController.OnMainMenu += ShowMenuCanvas;
         GameController.OnGameOver += GameOver;
+        GameController.OnLevelComplete += LevelComplete;
+
+        UIData = new UIData();
+        UIData = Serializer.DeserializeObject(UIData) as UIData;
     }
 
     public void ShowLvls()
@@ -45,6 +54,14 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
+    void LevelComplete()
+    {
+        UIData.LockedLvl.Value = SceneManager.GetActiveScene().buildIndex + 2;
+        Serializer.SerializeObject(UIData);
+
+        levelCompleteMassage.SetActive(true);
+    }
+
     void GameOver()
     {
         gameOverMassage.SetActive(true);
@@ -58,6 +75,8 @@ public class MainMenuController : MonoBehaviour
 
     public void Exit()
     {
+        Serializer.SerializeObject(UIData);
+
         if (OnExit == null)
         {
             Application.Quit();
@@ -73,6 +92,16 @@ public class MainMenuController : MonoBehaviour
         hearts.SetActive(true);
         SceneManager.LoadScene(i, LoadSceneMode.Single);
         mainMenuCanvas.SetActive(false);
+        score.SetActive(true);
         Time.timeScale = 1;
+    }
+
+    public void NextLevel()
+    {
+        if (SceneManager.GetActiveScene().buildIndex < 3)
+        {
+            LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            levelCompleteMassage.SetActive(false);
+        }
     }
 }
